@@ -18,6 +18,7 @@ static constexpr bn:: fixed MIN_Y = -HALF_SCREEN_HEIGHT;
 static constexpr bn::fixed MAX_Y = HALF_SCREEN_HEIGHT;
 bn::random random;
 
+
 // Starting speed of a bouncer
 //static constexpr bn::fixed BASE_SPEED = random.get_int(-3, 3);
 
@@ -112,13 +113,16 @@ void add_bouncer(bn::vector<Bouncer, MAX_BOUNCERS>& bouncers) {
 
 int main() {
     bn::core::init();
+    bn::backdrop::set_color(bn::color(5, 0, 31));
+
+    bn::vector<Bouncer, MAX_BOUNCERS> bouncers = {};
 
     // Sprites and x speeds of bouncers
     // Items with the same index correspond to each other
     //bn::vector<bn::sprite_ptr, MAX_BOUNCERS> sprites = {};
     //bn::vector<bn::fixed, MAX_BOUNCERS> x_speeds = {};
 
-    //bn::vector<Bouncer, MAX_BOUNCERS> bouncers = {};
+    
 
     
 
@@ -135,7 +139,7 @@ int main() {
             // Add all x positions together
            
 
-           // BN_LOG("Average x: ", average_x(sprites));
+           BN_LOG("Average x: ", average_x(bouncers));
         }
 
         // for each bouncer
