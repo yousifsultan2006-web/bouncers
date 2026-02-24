@@ -16,9 +16,10 @@ static constexpr bn::fixed MIN_X = -HALF_SCREEN_WIDTH;
 static constexpr bn::fixed MAX_X = HALF_SCREEN_WIDTH;
 static constexpr bn:: fixed MIN_Y = -HALF_SCREEN_HEIGHT;
 static constexpr bn::fixed MAX_Y = HALF_SCREEN_HEIGHT;
+bn::random random;
 
 // Starting speed of a bouncer
-static constexpr bn::fixed BASE_SPEED = 2;
+//static constexpr bn::fixed BASE_SPEED = random.get_int(-3, 3);
 
 // Maximum number of bouncers on screen at once
 static constexpr int MAX_BOUNCERS = 20;
@@ -26,8 +27,8 @@ static constexpr int MAX_BOUNCERS = 20;
 class Bouncer {
 public:
     bn::sprite_ptr sprite = bn::sprite_items::dot.create_sprite();
-    bn::fixed x_speed = BASE_SPEED;
-    bn::fixed y_speed = BASE_SPEED;
+    bn::fixed x_speed;
+    bn::fixed y_speed; 
 
     void update() {
         
@@ -79,6 +80,9 @@ bn::fixed average_x(bn::vector<Bouncer, MAX_BOUNCERS>& bouncers) {
     for(Bouncer bouncer : bouncers) {
         x_sum += bouncer.sprite.x();
     }
+    if(bouncers.size() > 0) {
+        x_sum /= bouncers.size();
+    }
     return x_sum;
 
     
@@ -88,6 +92,19 @@ void add_bouncer(bn::vector<Bouncer, MAX_BOUNCERS>& bouncers) {
     // Only add if we're below the maximum
     if(bouncers.size() < bouncers.max_size()) {
         bouncers.push_back(Bouncer());
+
+        // Set the new bouncer's speed to a random value between -3 and 3
+        bouncers.back().x_speed = random.get_int(-3, 3);
+        bouncers.back().y_speed = random.get_int(-3, 3);
+        //prevent the speed from being 0
+        if(bouncers.back().x_speed ==0) {
+            bouncers.back().x_speed = 1;
+            
+        }
+        if(bouncers.back().y_speed ==0) {
+            bouncers.back().y_speed = 1;
+            
+        }
         
         
     }
@@ -98,10 +115,10 @@ int main() {
 
     // Sprites and x speeds of bouncers
     // Items with the same index correspond to each other
-    bn::vector<bn::sprite_ptr, MAX_BOUNCERS> sprites = {};
-    bn::vector<bn::fixed, MAX_BOUNCERS> x_speeds = {};
+    //bn::vector<bn::sprite_ptr, MAX_BOUNCERS> sprites = {};
+    //bn::vector<bn::fixed, MAX_BOUNCERS> x_speeds = {};
 
-    bn::vector<Bouncer, MAX_BOUNCERS> bouncers = {};
+    //bn::vector<Bouncer, MAX_BOUNCERS> bouncers = {};
 
     
 
@@ -118,7 +135,7 @@ int main() {
             // Add all x positions together
            
 
-            BN_LOG("Average x: ", average_x(sprites));
+           // BN_LOG("Average x: ", average_x(sprites));
         }
 
         // for each bouncer
